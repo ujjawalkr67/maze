@@ -2,7 +2,18 @@
 
 <%= render 'home/header' %>
 
-
+            <% def formatted_time(created_at) %>
+              <% elapsed_time = Time.now - created_at %>
+              <% if elapsed_time < 60 %>
+                <%= "#{elapsed_time.to_i}s ago" %>
+              <% elsif elapsed_time < 3600 %>
+                <%= "#{(elapsed_time / 60).to_i}m ago" %>
+              <% elsif elapsed_time < 86400 %>
+                <%= "#{(elapsed_time / 3600).to_i}h ago" %>
+              <% else %>
+                <%= "#{(elapsed_time / 86400).to_i}d ago" %>
+              <% end %>
+            <% end %>
 <!-- MAIN SECTION -->
  <%# <p><%= notice ></p> %>
 
@@ -173,7 +184,10 @@
             </div>
             <div class="flex items-center justify-between py-1">
               <p class="font-light text-base"><%= first_comment.data %></p>
-              <p class="font-light text-sm"><%= time_ago_in_words(first_comment.created_at) %></p>
+              <div class="flex items-center space-x-6">
+                  <p class="font-montserrat text-[14px] leading-[17.07px] tracking-[0%] w-[41px] h-[17px] text-blue-500 cursor-pointer">Reply</p>                    
+                  <p class="font-light text-sm"><%= formatted_time(first_comment.created_at) %></p>
+              </div>
             </div>
             <hr class="w-full border-gray-300">
 
@@ -200,7 +214,10 @@
                   </div>
                   <div class="flex items-center justify-between py-1">
                     <p class="font-light text-base"><%= comment.data %></p>
-                    <p class="font-light text-sm"><%= time_ago_in_words(comment.created_at) %></p>
+                    <div class="flex items-center space-x-6">
+                    <p class="font-montserrat text-[14px] leading-[17.07px] tracking-[0%] w-[41px] h-[17px] text-blue-500 cursor-pointer">Reply</p>
+                    <p class="font-light text-sm"><%= formatted_time(comment.created_at) %></p>
+                    </div>
                   </div>
                 </div>
                 <hr class="w-full border-gray-300">
