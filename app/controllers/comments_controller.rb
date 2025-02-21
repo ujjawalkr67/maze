@@ -4,11 +4,11 @@ class CommentsController < ApplicationController
     def create
       @comment = @post.comments.build(comment_params)
       if @comment.save
-        puts "Comment saved successfully!"   # Debug message
-        redirect_to request.referer, notice: "Comment was successfully created."
+        puts "Comment successfully!"
+        redirect_to request.referer, notice: "Comment created"
       else
-        puts "Failed to save comment: #{@comment.errors.full_messages}"  # Debug message
-        redirect_to request.referer, alert: "Comment was not created."
+        puts "Failed: #{@comment.errors.full_messages}" 
+        redirect_to request.referer, alert: "Comment"
       end
     end
     
