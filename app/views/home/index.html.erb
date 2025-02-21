@@ -88,7 +88,7 @@
                 <div class="py-1" role="none">
                   <%= link_to "Show", "posts/#{post.id}", class: "block px-4 py-2 text-sm md:text-lg text-gray-700 font-semibold hover:text-indigo-800" %>
                   <%= link_to "Edit", "posts/#{post.id}/edit", class: "block px-4 py-2 text-sm md:text-lg text-gray-700 font-semibold hover:text-indigo-800" %>
-                  <%= link_to "Delete", "posts/#{post.id}", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "block px-4 py-2 text-sm md:text-lg text-gray-700 font-semibold hover:text-indigo-800" %>
+                  <%= link_to "Delete", "posts/#{post.id}", data: {turbo_method: :delete,}, class: "block px-4 py-2 text-sm md:text-lg text-gray-700 font-semibold hover:text-indigo-800" %>
                 </div>
               </div>
             </div>
@@ -224,7 +224,7 @@
               </button>
             </p>
           <% else %>
-            <p class="text-base font-semibold text-gray-600">No comments yet</p>
+            <p class="text-base font-semibold text-gray-600">No comments</p>
           <% end %>
 
       </div>
