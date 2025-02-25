@@ -12,7 +12,7 @@ class HomeController < ApplicationController
       public: params[:public]
     )
     if @post.save
-      redirect_to home_path, notice: "Post was successfully created."
+      redirect_to home_path
     else
       render :index, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class HomeController < ApplicationController
       description: params[:description],
       public: params[:public]
     )
-      redirect_to home_path, notice: "Post was successfully updated."
+      redirect_to home_path
     else
       render :index, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class HomeController < ApplicationController
 
   def destroy
     if @post.destroy
-      redirect_to home_path, notice: "Post was successfully destroyed."
+      redirect_to home_path
     else
       redirect_to home_path, alert: "Failed to delete post."
     end
