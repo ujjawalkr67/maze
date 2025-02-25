@@ -15,7 +15,6 @@
               <% end %>
             <% end %>
 <!-- MAIN SECTION -->
- <%# <p><%= notice ></p> %>
 
 <main class="flex flex-col gap-4 bg-gray-200 rounded-2xl p-4 sm:p-6 md:p-8">
 
@@ -103,9 +102,7 @@
                 </div>
               </div>
             </div>
-            <%# <button class="bg-indigo-600 hover:bg-indigo-800 text-white py-1 md:py-2 px-2 md:px-8 rounded-lg text-base md:text-xl font-normal hover:cursor-pointer">Edit</button>
-            <button class="bg-indigo-600 hover:bg-indigo-800 text-white py-1 md:py-2 px-2 md:px-8 rounded-lg text-base md:text-xl font-normal hover:cursor-pointer">Delete</button> %>
-          </div>
+            </div>
         </div>
         <p class="w-full text-gray-400 text-xs md:text-sm"><%= time_ago_in_words(post.created_at) %>, <%= post.public ? "Private" : "Public" %></p>
 

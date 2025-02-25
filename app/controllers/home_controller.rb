@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 
   def show
     @comments = @post.comments.order(created_at: :desc)
-    @comment = Comment.new   # This is for the form in the show
+    @comment = Comment.new  
   end
 
   def edit
@@ -39,8 +39,11 @@ class HomeController < ApplicationController
   end
 
   def destroy
-    @post.destroy
-    redirect_to home_path, notice: "Post was successfully destroyed."
+    if @post.destroy
+      redirect_to home_path, notice: "Post was successfully destroyed."
+    else
+      redirect_to home_path, alert: "Failed to delete post."
+    end
   end
 
   private
