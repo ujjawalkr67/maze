@@ -121,7 +121,9 @@
 
           <div class="w-full flex flex-col px-2 md:px-10 py-1 md:py-3 mb-2 justify-center bg-white-100">
             <div class="flex items-center">
-              <p class="w-full font-normal text-base md:text-2xl">User_name</p>
+              <p class="w-full font-normal text-base md:text-2xl"> 
+          <%= comment.user.first_name %> <%= comment.user.last_name %>
+              </p>
               <div class="flex items-center gap-1">
                 <div x-data="{ liked: false }" class="flex">
                   <button type="button"

@@ -1,46 +1,46 @@
 class HomeController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
-    @posts = Post.includes(:comments).order(created_at: :desc)
+    # Show public posts for everyone + private posts only for the current user
+    @posts = Post.includes(:comments).where("public = ? OR user_id = ?", true, current_user.id).order(created_at: :desc)
   end
 
   def create
-    @post = Post.new(
-      title: params[:title],
-      description: params[:description],
-      public: params[:public]
-    )
+    @post = current_user.posts.build(post_params) # Associate post with the logged-in user
+
     if @post.save
-      redirect_to home_path
+      redirect_to home_path, notice: 'Post was successfully created.'
     else
+      flash[:alert] = "Error creating post."
       render :index, status: :unprocessable_entity
     end
   end
 
   def show
-    @comments = @post.comments.order(created_at: :desc)
-    @comment = Comment.new  
+    # Ensure users can only view private posts that they own
+    if !@post.public && @post.user != current_user
+      redirect_to home_path, alert: "You are not authorized to view this post."
+    end
+    @comments = @post.comments.includes(:user).order(created_at: :desc) # Eager load users
+    @comment = @post.comments.build 
   end
 
   def edit
   end
 
   def update
-    if @post.update(
-      title: params[:title],
-      description: params[:description],
-      public: params[:public]
-    )
-      redirect_to home_path
+    if @post.update(post_params)
+      redirect_to home_path, notice: 'Post updated successfully.'
     else
-      render :index, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     if @post.destroy
-      redirect_to home_path
+      redirect_to home_path, notice: 'Post deleted successfully.'
     else
       redirect_to home_path, alert: "Failed to delete post."
     end
@@ -54,5 +54,11 @@ class HomeController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
+  end
+
+  def authorize_user!
+    unless @post.user == current_user
+      redirect_to home_path, alert: "You are not authorized to perform this action."
+    end
   end
 end

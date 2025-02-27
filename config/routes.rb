@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
+  get 'landing/index'
+  devise_for :users
+  # Landing page as the root page for unauthenticated users
+  unauthenticated :user do
+    root 'landing#index', as: :unauthenticated_root
+  end
 
+  # Home page for logged-in users
+  authenticated :user do
+    root 'home#index', as: :authenticated_root
+  end
   get '/home' => 'home#index'
   post "/home", to: "home#create"
   get "/posts/:id", to: "home#show"
@@ -13,6 +23,5 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+
 end

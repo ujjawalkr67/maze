@@ -5,27 +5,40 @@
 
 
 <main class="flex flex-col gap-4 bg-gray-200 rounded-2xl p-4 sm:p-6 md:p-8">
-  <form action="<%= edit_post_path %>" method="patch" class="flex flex-col items-center justify-center bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-md">
+<form action="<%= edit_post_path(@post) %>" method="post" class="flex flex-col items-center justify-center bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-md">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= hidden_field_tag "_method", "patch" %>
+
     <div class="flex flex-col gap-y-5 w-full">
+      
       <!-- Title Input -->
       <div>
-        <label for="title" class="block text-sm sm:text-base font-medium text-gray-900">Title</label>
+        <label for="post_title" class="block text-sm sm:text-base font-medium text-gray-900">Title</label>
         <div class="mt-2">
           <div class="flex items-center rounded-md bg-white border border-gray-300 focus-within:border-indigo-600">
-            <input type="text" name="title" id="title" value="<%= @post.title %>" class="block w-full p-2 sm:p-3 text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none rounded-md">
+            <input type="text" name="post[title]" id="post_title" value="<%= @post.title %>" required 
+              class="block w-full p-2 sm:p-3 text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none rounded-md">
           </div>
         </div>
       </div>
 
       <!-- Description Input -->
       <div>
-      <label for="description" class="block text-sm sm:text-base font-medium text-gray-900">Description</label>
-      <div class="mt-2">
-        <input type="text" name="description" id="description" value="<%= @post.description %>" 
-          class="block w-full rounded-md bg-white p-2 sm:p-3 text-sm sm:text-base text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600 placeholder-gray-400"
-          placeholder="Enter a short description...">
+        <label for="post_description" class="block text-sm sm:text-base font-medium text-gray-900">Description</label>
+        <div class="mt-2">
+          <input type="text" name="post[description]" id="post_description" value="<%= @post.description %>" required
+            class="block w-full rounded-md bg-white p-2 sm:p-3 text-sm sm:text-base text-gray-900 border border-gray-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600 placeholder-gray-400"
+            placeholder="Enter a short description...">
+        </div>
+      </div>    
+
+      <!-- Public/Private Checkbox -->
+      <div class="flex items-center gap-2">
+        <input type="hidden" name="post[public]" value="false"> 
+        <input type="checkbox" name="post[public]" id="post_public" value="true" <%= "checked" if @post.public %> 
+          class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+        <label for="post_public" class="text-sm sm:text-base font-medium text-gray-900">Make Public</label>
       </div>
-    </div>    
 
       <!-- Action Buttons -->
       <div class="flex flex-col md:flex-row justify-between gap-4">
@@ -45,9 +58,10 @@
         </div>
 
         <div class="w-full md:w-auto">
-          <button class="w-full md:w-auto bg-[#377DFF] hover:bg-blue-700 text-white py-3 px-6 rounded-lg text-sm sm:text-lg font-medium hover:cursor-pointer">Update</button>
+          <button type="submit" class="w-full md:w-auto bg-[#377DFF] hover:bg-blue-700 text-white py-3 px-6 rounded-lg text-sm sm:text-lg font-medium hover:cursor-pointer">Update</button>
         </div>
       </div>
     </div>
-  </form>
+</form>
+
 </main>
