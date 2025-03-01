@@ -14,9 +14,13 @@
   
   </head>
 
-  <body class="px-2 md:px-8">
+  <body class="flex-1 ml-[180px] mt-[60px] p-6 px-2 md:px-8">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+    <% if user_signed_in? && current_user.has_role?(:admin) %>
+      <%= link_to "Admin Panel", admin_root_path, class: "nav-link" %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

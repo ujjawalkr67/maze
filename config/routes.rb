@@ -5,7 +5,15 @@ Rails.application.routes.draw do
   unauthenticated :user do
     root 'landing#index', as: :unauthenticated_root
   end
-
+  namespace :admin do
+    root to: "dashboard#index" # Admin dashboard
+    resources :users do
+      member do
+        patch :activate
+        patch :deactivate
+      end
+    end
+  end
   # Home page for logged-in users
   authenticated :user do
     root 'home#index', as: :authenticated_root

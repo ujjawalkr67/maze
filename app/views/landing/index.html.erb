@@ -1,16 +1,41 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-  <!-- Main Text -->
-  <h1 class="text-2xl md:text-4xl font-bold text-gray-800 text-center">
-    Social media shared today, tomorrow or by location
-  </h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body class="h-full w-full">
+  <main class="w-screen h-screen bg-cover bg-center flex flex-col" style="background-image: url(<%= asset_path('loginbg.png') %>);">
+   <!-- Navbar -->
+    <nav class="absolute w-full h-[99px] left-0 top-0 bg-white/5 flex items-center px-6">
+        <!-- Logo Frame -->
+        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+            <img src="<%= asset_path('loginicon.svg') %>" alt="Logo" class="w-10 h-10">
+        </div>
+        
+        <!-- Text 'Maze' -->
+        <div class="ml-6 text-white text-3xl font-semibold font-serif">Maze</div>
+    </nav>
 
-  <p class="text-lg md:text-2xl text-gray-600 mt-2">
-    Discover with Maze
-  </p>
-
-  <!-- Buttons -->
-  <div class="mt-6 flex gap-4">
-    <%= link_to "Create Account", new_user_registration_path, class: "px-6 py-3 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600 transition" %>
-    <%= link_to "Login", new_user_session_path, class: "px-6 py-3 border border-gray-400 text-gray-800 rounded-lg text-lg hover:bg-gray-200 transition" %>
-  </div>
-</div>
+  <!-- Thin Blue Line Under Navbar -->
+   <hr class="absolute w-full left-0 top-[99px] h-[1px] bg-gradient-to-r from-[#377DFF] to-white border-0">
+    <div class="flex flex-col gap-7 md:gap-10 items-center justify-center flex-1 text-white">
+      <h1 class="text-4xl md:text-8xl md:px-28 text-center font-bold">Social media shared today, tomorrow or by location</h1>
+      <p class="text-lg md:text-2xl">Discover with Maze</p>
+      <div class="flex items-center gap-4">
+        <%= link_to "Create Account", new_user_registration_path , class: "bg-[#377DFF] hover:bg-[#2b66d2] focus:border-none text-white py-2 px-3 md:px-8 rounded-lg text-lg md:text-xl font-medium hover:cursor-pointer" %>
+        <p>or</p>
+        <%= link_to "Login", new_user_session_path , class: "bg-gray-50 hover:bg-[#EAF4FF] text-[#377DFF] py-2 px-3 md:px-8 rounded-lg text-lg md:text-xl font-medium hover:cursor-pointer" %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
