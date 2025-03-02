@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
   def index
     # Show public posts for everyone + private posts only for the current user
-    @posts = Post.includes(:comments).where("public = ? OR user_id = ?", true, current_user.id).order(created_at: :desc)
+    @posts = Post.includes(:comments, :user, :likes).where("public = ? OR user_id = ?", true, current_user.id).order(created_at: :desc)
   end
 
   def create
@@ -17,7 +17,18 @@ class HomeController < ApplicationController
       render :index, status: :unprocessable_entity
     end
   end
-
+  def like
+    @post = Post.find(params[:id])
+    if @post.liked_by?(current_user)
+      @post.likes.find_by(user: current_user).destroy
+      liked = false
+    else
+      @post.likes.create(user: current_user)
+      liked = true
+    end
+  
+    render json: { liked: liked, likes_count: @post.likes.count }
+  end
   def show
     # Ensure users can only view private posts that they own
     if !@post.public && @post.user != current_user

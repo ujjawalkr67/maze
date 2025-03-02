@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   get 'landing/index'
   devise_for :users
+
   # Landing page as the root page for unauthenticated users
   unauthenticated :user do
     root 'landing#index', as: :unauthenticated_root
   end
+
   namespace :admin do
     root to: "dashboard#index" # Admin dashboard
     resources :users do
@@ -14,6 +16,7 @@ Rails.application.routes.draw do
       end
     end
   end
+
   # Home page for logged-in users
   authenticated :user do
     root 'home#index', as: :authenticated_root
@@ -27,9 +30,17 @@ Rails.application.routes.draw do
 
   # comments routes
   post "/posts/:id", to: "comments#create", as: "comments"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # Likes routes (Polymorphic: supports both Posts & Comments)
+  resources :posts do
+    resources :likes, only: [:create, :destroy], defaults: { likeable_type: "Post" }
+  end
+
+  resources :comments do
+    resources :likes, only: [:create, :destroy], defaults: { likeable_type: "Comment" }
+  end
+  
   get "up" => "rails/health#show", as: :rails_health_check
-
+  root 'landing#index' 
 
 end

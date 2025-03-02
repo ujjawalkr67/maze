@@ -7,7 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :comments, dependent: :destroy
   has_many :posts, dependent: :destroy
-
+  has_many :likes, dependent: :destroy
   validates :first_name, :last_name, :email, :phone_number, presence: true
   validates :email, uniqueness: { case_sensitive: false }
   validates :phone_number, uniqueness: true, numericality: { only_integer: true }, length: { is: 10 }
