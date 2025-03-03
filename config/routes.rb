@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'landing/index'
   devise_for :users
 
-  # Landing page as the root page for unauthenticated users
+  # Landing page for unauthenticated users
   unauthenticated :user do
     root 'landing#index', as: :unauthenticated_root
   end
@@ -13,6 +13,15 @@ Rails.application.routes.draw do
       member do
         patch :activate
         patch :deactivate
+      end
+    end
+
+    # Reports routes
+    resources :reports, only: [:index] do
+      collection do
+        get :users_report      # Report: All users with posts, comments, likes
+        get :active_users_report  # Report: Users with more than 10 posts
+        get :posts_report      # Report: Posts with comments & likes count
       end
     end
   end
@@ -28,7 +37,7 @@ Rails.application.routes.draw do
   get "posts/:id/edit", to: "home#edit"
   patch "/posts/:id/edit", to: "home#update", as: "edit_post"
 
-  # comments routes
+  # Comments routes
   post "/posts/:id", to: "comments#create", as: "comments"
 
   # Likes routes (Polymorphic: supports both Posts & Comments)
@@ -39,8 +48,7 @@ Rails.application.routes.draw do
   resources :comments do
     resources :likes, only: [:create, :destroy], defaults: { likeable_type: "Comment" }
   end
-  
+
   get "up" => "rails/health#show", as: :rails_health_check
   root 'landing#index' 
-
 end

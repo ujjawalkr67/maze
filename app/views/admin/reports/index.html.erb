@@ -1,0 +1,16 @@
+<h1>Admin Reports</h1>
+
+<ul>
+  <li>
+    <a href="<%= users_report_admin_reports_path(format: :csv) %>" class="btn">Download Users Report (CSV)</a>
+    <a href="<%= users_report_admin_reports_path(format: :xlsx) %>" class="btn">Download Users Report (XLSX)</a>
+  </li>
+  <li>
+    <a href="<%= active_users_report_admin_reports_path(format: :csv) %>" class="btn">Download Active Users Report (CSV)</a>
+    <a href="<%= active_users_report_admin_reports_path(format: :xlsx) %>" class="btn">Download Active Users Report (XLSX)</a>
+  </li>
+  <li>
+    <a href="<%= posts_report_admin_reports_path(format: :csv) %>" class="btn">Download Posts Report (CSV)</a>
+    <a href="<%= posts_report_admin_reports_path(format: :xlsx) %>" class="btn">Download Posts Report (XLSX)</a>
+  </li>
+</ul>

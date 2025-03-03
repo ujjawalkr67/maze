@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
     content : [
         './app/helpers/**/*.rb',
         './app/javascript/**/*.js',
@@ -6,7 +6,12 @@ module.export = {
         './app/assets/stylesheets/**/*.css'
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ['Poppins', 'sans-serif'],
+                jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+              },
+        },
     },
     plugins: [],
 }

@@ -75,3 +75,6 @@ gem "kaminari", "~> 1.2"
 gem "devise"
 
 gem "rolify"
+
+gem 'axlsx', require: false
+gem 'axlsx_rails'
