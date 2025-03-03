@@ -1,3 +1,4 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
   get 'landing/index'
   devise_for :users
@@ -13,6 +14,10 @@ Rails.application.routes.draw do
       member do
         patch :activate
         patch :deactivate
+      end
+      collection do
+        get :upload_files   # Page to upload CSV/XLSX file
+        post :bulk_upload   # Processes the uploaded file
       end
     end
 
@@ -48,7 +53,10 @@ Rails.application.routes.draw do
   resources :comments do
     resources :likes, only: [:create, :destroy], defaults: { likeable_type: "Comment" }
   end
-
+    # Sidekiq Web UI (Restricted to Admins)
+    authenticate :user, ->(user) { user.admin? } do
+      mount Sidekiq::Web => "/sidekiq"
+    end
   get "up" => "rails/health#show", as: :rails_health_check
   root 'landing#index' 
 end

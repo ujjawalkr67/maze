@@ -20,7 +20,7 @@
   <%= link_to "Feed", home_path, class: "w-full px-4 py-3 rounded-lg text-gray-800 hover:bg-gray-200 text-lg font-medium #{current_page?(home_path) ? 'bg-[#377DFF] text-white' : ''}" %>
 
   <% if current_user.has_role?(:admin) %>
-<%= link_to "Manage Users", admin_root_path, class: "w-full px-4 py-3 rounded-lg text-gray-800 hover:bg-gray-200 text-lg font-medium #{current_page?(admin_root_path) ? 'bg-[#377DFF] text-white' : ''}" %>
+    <%= link_to "Manage Users", admin_root_path, class: "w-full px-4 py-3 rounded-lg text-gray-800 hover:bg-gray-200 text-lg font-medium #{current_page?(admin_root_path) ? 'bg-[#377DFF] text-white' : ''}" %>
     <%= link_to "Report", admin_reports_path, class: "w-full px-4 py-3 rounded-lg text-gray-800 hover:bg-gray-200 text-lg font-medium #{current_page?(admin_reports_path) ? 'bg-[#377DFF] text-white' : ''}" %>
   <% end %>
 

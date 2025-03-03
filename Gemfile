@@ -78,3 +78,12 @@ gem "rolify"
 
 gem 'axlsx', require: false
 gem 'axlsx_rails'
+
+gem 'sendgrid-ruby'
+
+gem 'sidekiq'
+gem 'roo'
+gem 'roo-xls' # If you're working with XLS/XLSX files
+
+gem 'dotenv-rails'
+

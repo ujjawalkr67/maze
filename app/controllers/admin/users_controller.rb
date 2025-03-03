@@ -1,3 +1,6 @@
+require 'csv'
+require 'roo'
+
 module Admin
   class UsersController < BaseController
     def index
@@ -56,6 +59,28 @@ module Admin
         render :new, status: :unprocessable_entity
       end
     end
+    def upload_files
+      # Renders the upload page
+    end
+
+    def bulk_upload
+      if params[:file].present?
+        file = params[:file]
+        users_data = read_file(file)
+
+        if users_data.present?
+          BulkUserUploadJob.perform_async(users_data, current_user.email)
+          flash[:notice] = "File uploaded successfully. Users are being processed."
+        else
+          flash[:alert] = "Invalid or empty file. Please check the format."
+        end
+      else
+        flash[:alert] = "Please upload a CSV or XLSX file."
+      end
+
+      redirect_to upload_files_admin_users_path
+    end
+
 
     private
 
@@ -63,6 +88,28 @@ module Admin
       redirect_to home_path, alert: "Access denied!" unless current_user.has_role?(:admin)
     end
 
+    def read_file(file)
+      users_data = []
+
+      case File.extname(file.original_filename)
+      when ".csv"
+        CSV.foreach(file.path, headers: true) do |row|
+          users_data << row.to_h
+        end
+      when ".xlsx"
+        spreadsheet = Roo::Spreadsheet.open(file.path)
+        headers = spreadsheet.row(1)
+        (2..spreadsheet.last_row).each do |i|
+          row = Hash[[headers, spreadsheet.row(i)].transpose]
+          users_data << row
+        end
+      else
+        return nil
+      end
+
+      users_data
+    end
+    
     def user_params
       params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation, :active, role_ids: [])
     end

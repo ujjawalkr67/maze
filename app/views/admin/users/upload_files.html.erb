@@ -1,0 +1,14 @@
+<h1>Bulk User Upload</h1>
+
+<%= form_with url: bulk_upload_admin_users_path, method: :post, local: true, multipart: true do |f| %>
+  <div>
+    <label for="file">Upload CSV/XLSX File:</label>
+    <%= f.file_field :file, accept: ".csv, .xlsx", required: true %>
+  </div>
+
+  <div>
+    <%= f.submit "Upload", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Admin Dashboard", admin_root_path, class: "btn btn-secondary" %>
