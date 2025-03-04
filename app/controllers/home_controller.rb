@@ -5,6 +5,7 @@ class HomeController < ApplicationController
   def index
     # Show public posts for everyone + private posts only for the current user
     @posts = Post.includes(:comments, :user, :likes).where("public = ? OR user_id = ?", true, current_user.id).order(created_at: :desc)
+    @users = current_user.has_role?(:admin) ? User.left_joins(:roles).where.not(roles: { name: '1' }) : nil
   end
 
   def create
