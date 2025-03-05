@@ -73,61 +73,111 @@
     <!-- Page Content -->
     <div class="flex-1 p-6">
 
-      <h1>Create New User</h1>
+            <!-- Content -->
+<main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-xl font-medium text-gray-700 mb-6">Add Users</h2>
 
-      <%= form_with model: @user, url: admin_users_path, local: true do |form| %>
+    <!-- Error Messages -->
+    <% if @user.errors.any? %>
+      <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul class="list-disc pl-5">
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-        <% if @user.errors.any? %>
-          <div class="alert alert-danger">
-            <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-            <ul>
-              <% @user.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
+    <!-- Form -->
+    <%= form_with model: @user, url: admin_users_path, local: true, class: "space-y-6" do |form| %>
+
+      <!-- First row -->
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <%= form.text_field :first_name, placeholder: "Add First Name", required: true, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
+        <div>
+          <%= form.text_field :last_name, placeholder: "Add Last Name", required: true, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
+      </div>
+
+      <!-- Second row -->
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <%= form.email_field :email, placeholder: "Email", required: true, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
+        <div>
+          <%= form.text_field :phone_number, placeholder: "Phone Number", required: true, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
+      </div>
+
+      <!-- Third row -->
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <%= form.password_field :password, placeholder: "Password", required: true, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
+        <div>
+          <%= form.password_field :password_confirmation, placeholder: "Confirm Password", required: true, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-3">Assign Role</label>
+          <div class="grid grid-cols-2 gap-4">
+            
+            <!-- Admin Role Button -->
+            <button type="button" id="admin_role_btn" 
+              class="role-btn w-full py-2.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              data-role="1">
+              Admin
+            </button>
+
+            <!-- User Role Button -->
+            <button type="button" id="user_role_btn" 
+              class="role-btn w-full py-2.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              data-role="2">
+              User
+            </button>
+
           </div>
-        <% end %>
 
-        <div>
-          <%= form.label :first_name %>
-          <%= form.text_field :first_name, required: true %>
+          <!-- Hidden Radio Field to store selection -->
+          <%= form.hidden_field :role_id, id: "selected_role" %>
         </div>
 
-        <div>
-          <%= form.label :last_name %>
-          <%= form.text_field :last_name, required: true %>
-        </div>
 
-        <div>
-          <%= form.label :email %>
-          <%= form.email_field :email, required: true %>
-        </div>
+      <!-- Submit Button -->
+      <div class="flex justify-end mt-8">
+        <%= form.submit "Create User", class: "px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
 
-        <div>
-          <%= form.label :phone_number %>
-          <%= form.text_field :phone_number, required: true %>
-        </div>
+    <% end %>
+  </div>
+</main>
 
-        <div>
-          <%= form.label :password %>
-          <%= form.password_field :password, required: true %>
-        </div>
-
-        <div>
-          <%= form.label :password_confirmation %>
-          <%= form.password_field :password_confirmation, required: true %>
-        </div>
-
-        <div>
-          <%= form.label :role_ids, "Assign Roles" %>
-          <%= form.collection_check_boxes(:role_ids, Role.all, :id, :name) %>
-        </div>
-
-        <div>
-          <%= form.submit "Create User", class: "btn btn-success" %>
-        </div>
-
-      <% end %>
     </div>
   </div>
   </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const roleButtons = document.querySelectorAll(".role-btn");
+    const roleInput = document.getElementById("selected_role");
+
+    roleButtons.forEach(button => {
+      button.addEventListener("click", function () {
+        // Remove active styles from all buttons
+        roleButtons.forEach(btn => btn.classList.remove("bg-blue-500", "text-black", "border-blue-500"));
+
+        // Add active style to the clicked button
+        this.classList.add("bg-blue-500", "text-black", "border-blue-500");
+
+        // Update the hidden input field with selected role
+        roleInput.value = this.getAttribute("data-role");
+      });
+    });
+  });
+</script>

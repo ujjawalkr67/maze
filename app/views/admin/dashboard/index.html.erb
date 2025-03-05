@@ -1,3 +1,26 @@
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            purple: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            }
+          }
+        }
+      }
+    }
+  </script>
 <div class="flex bg-gray-50 h-screen">
   <!-- Left Navigation Sidebar -->
   <div class="w-64 bg-white flex flex-col fixed h-full z-10">
@@ -71,47 +94,132 @@
     </div>
 
     <!-- Page Content -->
-    <div class="flex-1 p-6">
+    <div class="flex-1 p-8">
 
-    <h1>Admin Dashboard</h1>
+       <div class="bg-white rounded-lg shadow-sm">
+        <div class="p-6 flex justify-between items-center border-b border-gray-100">
+          <h2 class="text-xl font-semibold text-gray-700">List of Users</h2>
+          <div class="flex items-center gap-4">
+            <button class="bg-white-500 hover:bg-blue-500 text-black  px-4 py-2 rounded-md flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <%= link_to "Upload User", upload_files_admin_users_path, class: "btn btn-primary" %>
+          </button>
 
-    <h2>Users</h2>
-    <%= link_to "Create New User", new_admin_user_path, class: "btn btn-primary" %>
-    <%= link_to "Upload Users File", upload_files_admin_users_path, class: "btn btn-secondary", style: "margin-left: 10px;" %>
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.first_name %> <%= user.last_name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.phone_number%>
-          <td><%= user.active? ? "Active" : "Inactive" %></td>
+          <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <%= link_to "Create New User", new_admin_user_path, class: "btn btn-primary" %>
+          </button>
+          </div>
 
-          <td>
-            <% if user.active? %>
-              <%= link_to "Deactivate", deactivate_admin_user_path(user), method: :patch, class: "bg-red-500 text-white px-2 py-1 rounded", data: { turbo_method: :patch } %>
-            <% else %>
-              <%= link_to "Activate", activate_admin_user_path(user), method: :patch, class: "bg-green-500 text-white px-2 py-1 rounded", data: { turbo_method: :patch } %>
-            <% end %>
-          </td>
-          <td>
-            <%= link_to "Show", admin_user_path(user), class: "btn btn-primary" %>
-            </td>
-          <td>
-            <%= link_to "Edit", edit_admin_user_path(user), class: "btn btn-info" %>
-          </td>
-          <td>
-            <%= button_to "Delete", admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        </div>
+        
+        
+        <div class="overflow-x-auto mb-4 pb-40">
+          <table class="w-full">
+            <thead>
+              <tr class="text-left text-gray-500 text-sm border-b border-gray-100">
+                <th class="p-4 font-medium w-12"></th>
+                <th class="p-4 font-medium">Name</th>
+                <th class="p-4 font-medium">Phone</th>
+                <th class="p-4 font-medium">Email</th>
+                <th class="p-4 font-medium">Status</th>
+                <th class="p-4 font-medium w-12"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- User 1 -->
+            <% @users.each do |user| %>
+                  <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <!-- User Icon -->
+                            <td class="p-4">
+                              <div class="h-8 w-8 bg-purple-600 rounded-md flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" class="h-5 w-5 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M2 12L7 2L12 12L17 2L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                  <path d="M2 12L7 22L12 12L17 22L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                              </div>
+                            </td>
+                            <td class="p-4">
+                              <div class="flex items-center gap-2">
+                                <div class="h-2 w-2 rounded-full <%= user.active? ? 'bg-green-500' : 'bg-red-500' %>"></div>
+                                <span><%= user.first_name %> <%= user.last_name %></span>
+                              </div>
+                            </td>
 
-          </td>
-        </tr>
-      <% end %>
-    </table>
-</div>
+                    <!-- Email -->
+                    <td class="p-4 text-gray-500"><%= user.email %></td>
+
+                    <!-- Phone Number -->
+                    <td class="p-4 text-gray-500"><%= user.phone_number %></td>
+
+                    <!-- Activate/Deactivate Button -->
+                    <td class="p-4">
+                      <% if user.active? %>
+                        <%= link_to "Deactivate", deactivate_admin_user_path(user), method: :patch, class: "bg-red-50 hover:bg-red-100 text-red-500 px-4 py-1 rounded-md",data: { turbo_method: :patch } %>
+                      <% else %>
+                        <%= link_to "Activate", activate_admin_user_path(user), method: :patch, class: "bg-green-50 hover:bg-green-100 text-green-500 px-4 py-1 rounded-md",data: { turbo_method: :patch } %>
+                      <% end %>
+                    </td>
+
+                    <!-- More Options (Three-Dot Menu) -->
+                    <td class="p-4 relative">
+                      <button onclick="toggleDropdown(event, '<%= user.id %>')" class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                        </svg>
+                      </button>
+
+                      <!-- Dropdown Menu -->
+                      <div id="dropdown-<%= user.id %>" class="hidden absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-md z-50">
+                        <ul>
+                          <li>
+                            <%= link_to "Show", admin_user_path(user), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+                          </li>
+                          <li>
+                            <%= link_to "Edit", edit_admin_user_path(user), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+                          </li>
+                          <li>
+                            <%= button_to "Delete", admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "block w-full text-left px-4 py-2 text-red-500 hover:bg-red-100" %>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+            
+        
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
   </div>
 </div>
+
+<script>
+  function toggleDropdown(event, userId) {
+    event.stopPropagation();
+    let dropdown = document.getElementById(`dropdown-${userId}`);
+
+    // Close other dropdowns before opening this one
+    document.querySelectorAll("[id^='dropdown-']").forEach(menu => {
+      if (menu !== dropdown) {
+        menu.classList.add("hidden");
+      }
+    });
+
+    // Toggle current dropdown
+    dropdown.classList.toggle("hidden");
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function() {
+    document.querySelectorAll("[id^='dropdown-']").forEach(menu => menu.classList.add("hidden"));
+  });
+</script>
