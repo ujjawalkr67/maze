@@ -3,8 +3,15 @@ class HomeController < ApplicationController
   before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
-    # Show public posts for everyone + private posts only for the current user
-    @posts = Post.includes(:comments, :user, :likes).where("public = ? OR user_id = ?", true, current_user.id).order(created_at: :desc)
+    if current_user.has_role?(:admin)
+      # Admin can see all posts (public & private)
+      @posts = Post.includes(:comments, :user, :likes).order(created_at: :desc)
+    else
+      # Normal users can see public posts + their own private posts
+      @posts = Post.includes(:comments, :user, :likes)
+                   .where("public = ? OR user_id = ?", true, current_user.id)
+                   .order(created_at: :desc)
+    end
     @users = current_user.has_role?(:admin) ? User.left_joins(:roles).where.not(roles: { name: '1' }) : nil
   end
 

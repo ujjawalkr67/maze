@@ -177,12 +177,6 @@
                       <div id="dropdown-<%= user.id %>" class="hidden absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-md z-50">
                         <ul>
                           <li>
-                            <%= link_to "Show", admin_user_path(user), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
-                          </li>
-                          <li>
-                            <%= link_to "Edit", edit_admin_user_path(user), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
-                          </li>
-                          <li>
                             <%= button_to "Delete", admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "block w-full text-left px-4 py-2 text-red-500 hover:bg-red-100" %>
                           </li>
                         </ul>
