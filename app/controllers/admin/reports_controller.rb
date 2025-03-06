@@ -39,20 +39,20 @@ class Admin::ReportsController < ApplicationController
       @posts = Post
         .joins(:user)
         .left_joins(:comments, :likes)
-        .select("users.first_name || ' ' || users.last_name AS author_name, 
-                 posts.title, 
-                 posts.description, 
-                 COALESCE(GROUP_CONCAT(comments.data, ' | '), 'No Comments') AS comment_data, 
-                 COUNT(likes.id) AS like_count")
-        .group("users.id, posts.id")
+        .select("
+          users.first_name || ' ' || users.last_name AS author_name, 
+          posts.title, 
+          posts.description, 
+          COALESCE(STRING_AGG(DISTINCT comments.data, ' | '), 'No Comments') AS comment_data, 
+          COUNT(DISTINCT likes.id) AS like_count
+        ")
+        .group("users.first_name, users.last_name, posts.id")
     
       respond_to do |format|
         format.csv { send_data generate_csv1(@posts), filename: "posts_report.csv" }
         format.xlsx { send_data generate_xlsx1(@posts), filename: "posts_report.xlsx" }
       end
     end
-    
-       
   
     private
     def generate_csv1(posts)
