@@ -23,6 +23,6 @@ class BulkUserUploadJob
       end
     end
 
-    AdminMailer.upload_summary(admin_email, created_users, failed_users).deliver_now
+    AdminMailer.upload_summary(admin_email, created_users, failed_users).deliver_later
   end
 end

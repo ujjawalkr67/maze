@@ -72,6 +72,7 @@
 
     <!-- Page Content -->
     <div class="flex-1 p-6">
+
 <main class="flex-1 p-6">
   <div class="max-w-3xl mx-auto">
     <div class="bg-white rounded-lg border border-gray-200 p-6">
@@ -98,22 +99,21 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="mt-4 text-center">
+        <div class="mt-8 text-center">
           <%= f.submit "Upload", class: "bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition duration-150 ease-in-out" %>
+          <!-- Back to Admin Dashboard -->
+          <%= link_to "Dashboard", admin_root_path, class: "bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-md transition duration-150 ease-in-out" %>
         </div>
       <% end %>
 
-      <!-- Back to Admin Dashboard -->
-      <div class="mt-4 text-center">
-        <%= link_to "Dashboard", admin_root_path, class: "bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-md transition duration-150 ease-in-out" %>
-      </div>
+      
     </div>
   </div>
 </main>
 
 <!-- JavaScript Fixes -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("turbo:load", function () {
     const fileInput = document.getElementById("file-upload");
     const fileNameText = document.getElementById("file-name");
     const selectFileBtn = document.getElementById("select-file-btn");
