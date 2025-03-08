@@ -89,3 +89,9 @@ gem 'dotenv-rails'
 
 # Add PostgreSQL
 gem 'pg', '~> 1.2'
+
+gem 'activestorage-validator'
+gem 'active_storage_validations'
+
+gem 'aws-sdk-s3', require: false
+
