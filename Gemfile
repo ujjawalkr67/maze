@@ -70,7 +70,8 @@ end
 gem 'tailwindcss-ruby', '>= 4.0.8' # Use the latest available version
 
 
-gem "tailwindcss-rails", "~> 4.1"
+gem 'tailwindcss-rails', '~> 4.0'
+
 
 gem "kaminari", "~> 1.2"
 
@@ -79,7 +80,8 @@ gem "devise"
 gem "rolify"
 
 gem 'axlsx', require: false
-gem 'axlsx_rails'
+gem 'caxlsx_rails'
+
 
 gem 'sendgrid-ruby'
 
