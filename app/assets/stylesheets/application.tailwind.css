@@ -1,7 +1,12 @@
+@import "@fontsource/plus-jakarta-sans";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply font-jakarta;
-  }
+/* Define the font inside @layer */
+@layer base {
+    body {
+        font-family: theme("fontFamily.jakarta");
+    }
+}

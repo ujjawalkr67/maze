@@ -70,6 +70,7 @@ end
 gem "tailwindcss-ruby", "~> 3.0"
 gem "tailwindcss-rails", "~> 3.3.1"
 
+gem "rubyzip", "~> 2.3.0"
 
 
 gem "kaminari", "~> 1.2"
