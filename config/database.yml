@@ -15,12 +15,11 @@ test:
   database: maze_test
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
+  <<: *default
   database: maze_f4yx
   username: maze_f4yx_user
   password: JC0wFEJ7ssQRhVQpJFyxLSPQC4AM7ln4
   host: dpg-cv6jukvnoe9s73bvstfg-a
   port: 5432
+
 
