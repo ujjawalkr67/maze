@@ -67,7 +67,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'tailwindcss-ruby', '>= 4.0.8' # Use the latest available version
+gem 'tailwindcss-ruby', '~> 4.0' # Use the latest available version
 
 
 gem 'tailwindcss-rails', '~> 4.0'

@@ -11,7 +11,8 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_one_attached :avatar  # Attach an image to the user
-  validates :avatar,attached: true, content_type: ['image/png', 'image/jpeg'], size: { less_than: 5.megabytes }
+  validates :avatar, content_type: ['image/png', 'image/jpeg'], size: { less_than: 5.megabytes }, allow_blank: true
+
 
   validates :first_name, :last_name, :email, :phone_number, presence: true
   validates :email, uniqueness: { case_sensitive: false }
