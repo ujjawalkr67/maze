@@ -98,5 +98,14 @@ Rails.application.configure do
   config.assets.compile = true
 config.assets.digest = true
 config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif *.svg *.eot *.ttf *.woff *.woff2)
-
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  address:              "smtp.sendgrid.net",
+  port:                 587,
+  domain:               "ujjawalkr67@gmail.com",  # replace with your domain
+  user_name:            "apikey",          # literal string "apikey"
+  password:             ENV["SENDGRID_API_KEY"],  # store your SendGrid API key in credentials
+  authentication:       :plain,
+  enable_starttls_auto: true
+}
 end
