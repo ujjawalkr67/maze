@@ -40,7 +40,7 @@
       <% end %>
 
       <% if current_user && current_user.has_role?(:admin) %>
-        <%= link_to admin_root_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{current_page?(admin_root_path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+        <%= link_to admin_root_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{[admin_root_path, upload_files_admin_users_path, new_admin_user_path].include?(request.path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
           </svg>
@@ -121,8 +121,8 @@
               <tr class="text-left text-gray-500 text-sm border-b border-gray-100">
                 <th class="p-4 font-medium w-12"></th>
                 <th class="p-4 font-medium">Name</th>
-                <th class="p-4 font-medium">Phone</th>
                 <th class="p-4 font-medium">Email</th>
+                <th class="p-4 font-medium">Phone</th>
                 <th class="p-4 font-medium">Status</th>
                 <th class="p-4 font-medium w-12"></th>
               </tr>
