@@ -13,74 +13,149 @@
   <% end %>
 <% end %>
 <div class="flex bg-gray-50 h-screen">
-  <!-- Left Navigation Sidebar -->
-  <div class="w-64 bg-white flex flex-col fixed h-full z-10">
-    <!-- Logo Section -->
-    <div class="p-6 flex items-center">
-      <img src="<%= asset_path('icon.svg')%>" class="w-8 h-8 text-purple-600" alt="logo">
-      <span class="ml-2 text-xl font-semibold text-gray-800">Mazee</span>
-    </div>
+ <!-- Mobile Menu Button -->
+   <div class="fixed top-4 left-4 z-30 md:hidden" x-data="{ open: false }">
+     <button @click="open = !open" class="p-2 bg-white rounded-lg shadow-md">
+       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg>
+     </button>
+    
+     <!-- Mobile Navigation Dropdown -->
+     <div x-show="open" @click.outside="open = false" x-cloak
+          class="absolute top-12 left-0 w-64 bg-white rounded-lg shadow-lg p-4 z-40">
+       <!-- Logo Section -->
+       <div class="p-4 flex items-center border-b border-gray-200 mb-4">
+         <img src="<%= asset_path('icon.svg')%>" class="w-8 h-8 text-purple-600" alt="logo">
+         <span class="ml-2 text-xl font-semibold text-gray-800">Mazee</span>
+       </div>
+      
+       <!-- Navigation Links -->
+       <div class="flex flex-col space-y-2">
+         <%= link_to home_path, class: "flex items-center px-4 py-3 rounded-lg #{request.path == home_path || request.path == '/' || request.path.match?(/^\/posts\/\d+(\/edit)?$/) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+           </svg>
+           <span class="ml-3 font-medium">Feed</span>
+           <% end %>
+        
+         <%= link_to profile_path, class: "flex items-center px-4 py-3 rounded-lg #{request.path == profile_path ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          <span class="ml-3 font-medium">Profile</span>
+          <%end%>
 
-    <!-- Navigation Links -->
-    <div class="flex-1 flex flex-col px-3">
-      <%= link_to home_path, class: "flex items-center px-4 py-3 rounded-lg #{request.path == home_path || request.path.match?(/^\/posts\/\d+(\/edit)?$/) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-        </svg>
-        <span class="ml-3 font-medium">Feed</span>
-      <% end %>
+        
+         <!-- Admin Links (conditionally shown) -->
+         <% if current_user && current_user.has_role?(:admin) %>
+          <%= link_to admin_root_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{current_page?(admin_root_path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+           </svg>
+           <span class="ml-3 font-medium">Manage Users</span>
+         <% end %>
+        
+         <%= link_to admin_reports_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{current_page?(admin_reports_path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+           </svg>
+           <span class="ml-3 font-medium">Reports</span>
+         <%end%>
+        <% end %>
+         <!-- Logout Button -->
+         <% if user_signed_in? %>
+        <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center px-4 py-3 mt-6 text-gray-700 hover:bg-gray-100 rounded-lg w-full" do %>
+             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+           </svg>
+           <span class="ml-3 font-medium">Logout</span>
+         <%end%>
+         <%end%>
+       </div>
+     </div>
+   </div>
 
-      <% if current_user && current_user.has_role?(:admin) %>
+
+   <!-- Left Navigation Sidebar (Desktop) -->
+   <div class="w-64 bg-white flex-col h-screen z-50 hidden md:flex">
+     <!-- Logo Section -->
+     <div class="p-6 flex items-center">
+       <img src="<%= asset_path('icon.svg')%>" class="w-8 h-8 text-purple-600" alt="logo">
+       <span class="ml-2 text-xl font-semibold text-gray-800">Mazee</span>
+     </div>
+
+
+     <!-- Navigation Links -->
+     <div class="flex-1 flex flex-col px-3">
+       <%= link_to home_path, class: "flex items-center px-4 py-3 rounded-lg #{request.path == home_path || request.path == '/' || request.path.match?(/^\/posts\/\d+(\/edit)?$/) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+         </svg>
+         <span class="ml-3 font-medium">Feed</span>
+        <% end %>
+
+        <%= link_to profile_path, class: "flex items-center px-4 py-3 rounded-lg #{request.path == profile_path ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          <span class="ml-3 font-medium">Profile</span>
+          <%end%>
+
+
+       <% if current_user && current_user.has_role?(:admin) %>
         <%= link_to admin_root_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{current_page?(admin_root_path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-          </svg>
-          <span class="ml-3 font-medium">Manage Users</span>
-        <% end %>
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+         </svg>
+         <span class="ml-3 font-medium">Manage Users</span>
+       <% end %>
 
-        <%= link_to admin_reports_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{current_page?(admin_reports_path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <span class="ml-3 font-medium">Reports</span>
-        <% end %>
+
+      <%= link_to admin_reports_path, class: "flex items-center px-4 py-3 rounded-lg mt-2 #{current_page?(admin_reports_path) ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'}" do %>
+         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+         </svg>
+         <span class="ml-3 font-medium">Reports</span>
+       <%end%>
       <% end %>
 
-      <!-- Logout Button -->
-      <% if user_signed_in? %>
+
+       <!-- Logout Button -->
+        <% if user_signed_in? %>
         <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center px-4 py-3 mt-6 text-gray-700 hover:bg-gray-100 rounded-lg w-full" do %>
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-          </svg>
-          <span class="ml-3 font-medium">Logout</span>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+         </svg>
+         <span class="ml-3 font-medium">Logout</span>
+       <%end%>
+       <%end%>
+     </div>
+   </div>
 
-  <!-- Main Content -->
-  <div class="flex-1 flex bg-white flex-col ml-64">
-    <!-- Top Header with Search -->
-    <div class="bg-white p-4 flex items-center justify-between gap-x-4 fixed top-0 left-64 right-0 h-16 z-10">
-      <!-- Search Bar -->
-      <div class="flex-1 max-w-3xl">
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <img src="<%= asset_path('search.svg')%>" class="w-5 h-5 text-gray-400" alt="search">
-          </div>
-          <input type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Search for something here...">
-        </div>
-      </div>
 
-      <!-- User Profile -->
-      <div class="flex items-center ml-2">
-        <img src="<%= asset_path('icon.svg')%>" class="w-10 h-10 rounded-full" alt="profile">
-          <span class="ml-3 text-gray-700 font-medium hidden md:block"><%= current_user.first_name %> <%= current_user.last_name %></span>
-      </div>
-    </div>
+ <!-- Main Content -->
+ <div class="flex-1 flex flex-col ">
+   <!-- Top Header with Search -->
+   <div class="bg-white p-4 flex items-center justify-between gap-x-4 fixed top-0 left-64 right-0 h-16 z-10">
+     <!-- Search Bar -->
+     <div class="flex-1 max-w-3xl ">
+       <div class="relative">
+         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+           <img src="<%= asset_path('search.svg')%>" class="w-5 h-5 text-gray-400" alt="search">
+         </div>
+         <input type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Search for something here...">
+       </div>
+     </div>
+
+
+     <!-- User Profile -->
+     <div class="flex items-center ml-2 gap-x-2">
+       <img src="<%= current_user.avatar.attached? ? url_for(current_user.avatar) : asset_path('icon.svg') %>" class="w-10 h-10 rounded-full" alt="profile">
+       <span class="ml-3 text-gray-700 font-medium hidden md:block"><%= current_user.first_name %> <%= current_user.last_name %></span>
+     </div>
+   </div>
 
     <!-- Page Content -->
-    <div class="flex-1 p-6 pt-20">
+    <div class="flex-1 p-2 pt-20 bg-white">
 
   <main class="flex flex-col gap-4 bg-gray-200 rounded-2xl px-2 py-4 md:px-8 md:py-8">
 

@@ -64,7 +64,10 @@ class HomeController < ApplicationController
       redirect_to home_path, alert: "Failed to delete post."
     end
   end
-
+  def profile
+    @user = current_user
+    @posts = @user.posts.order(created_at: :desc)
+  end
   private
 
   def post_params

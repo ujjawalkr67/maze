@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   delete "/posts/:id", to: "home#destroy"
   get "posts/:id/edit", to: "home#edit"
   patch "/posts/:id/edit", to: "home#update", as: "edit_post"
+  get 'profile', to: 'home#profile'
 
   # Comments routes
   post "/posts/:id", to: "comments#create", as: "comments"
