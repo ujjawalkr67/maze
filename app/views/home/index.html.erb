@@ -154,7 +154,7 @@
   <div class="flex items-center gap-x-2">
     <img 
       src="<%= current_user.avatar.attached? ? url_for(current_user.avatar) : asset_path('icon.svg') %>" 
-      class="w-8 h-4 md:h-10 rounded-full" 
+      class="md:w-8 md:h-10 rounded-full" 
       alt="profile"
     >
     <span class="ml-2 text-gray-700 font-medium hidden sm:block">
