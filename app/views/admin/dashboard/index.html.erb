@@ -142,22 +142,26 @@
 
  <!-- Main Content -->
  <div class="flex-1 flex flex-col ">
-   <!-- Top Header with Search -->
-   <div class="bg-white p-4 flex items-center justify-between gap-x-4 fixed top-0 left-64 right-0 h-16 z-10">
-     <!-- Search Bar -->
-     <div class="flex-1 max-w-3xl ">
-       <div class="relative">
-         <h1 class="text-2xl font-semibold text-gray-500">USER MANAGMENT</h1>
-         </div>
-     </div>
+<!-- Top Header with Search -->
+<div class="bg-white p-4 flex flex-col md:flex-row items-center justify-between gap-y-4 md:gap-x-4 fixed top-0 left-0 md:left-64 right-0 h-auto md:h-16 z-10">
+  <!-- Search Bar -->
+  <div class="w-full md:flex-1 max-w-3xl text-center md:text-left">
+    <h1 class="text-xl md:text-2xl font-semibold text-gray-500">USER MANAGEMENT</h1>
+  </div>
 
+  <!-- User Profile -->
+  <div class="flex items-center gap-x-2">
+    <img 
+      src="<%= current_user.avatar.attached? ? url_for(current_user.avatar) : asset_path('icon.svg') %>" 
+      class="w-10 h-8 rounded-full" 
+      alt="profile"
+    >
+    <span class="ml-2 text-gray-700 font-medium hidden sm:block">
+      <%= current_user.first_name %> <%= current_user.last_name %>
+    </span>
+  </div>
+</div>
 
-     <!-- User Profile -->
-     <div class="flex items-center ml-2 gap-x-2">
-       <img src="<%= current_user.avatar.attached? ? url_for(current_user.avatar) : asset_path('icon.svg') %>" class="w-10 h-10 rounded-full" alt="profile">
-       <span class="ml-3 text-gray-700 font-medium hidden md:block"><%= current_user.first_name %> <%= current_user.last_name %></span>
-     </div>
-   </div>
 
 
 <!-- Page Content -->
@@ -184,77 +188,105 @@
       </div>
     </div>
     
-    <!-- Table Section -->
-    <div class="overflow-x-auto mb-4 pb-40">
-      <table class="w-full min-w-[600px] border-collapse">
-        <thead>
-          <tr class="text-left text-gray-500 text-sm border-b border-gray-100">
-            <th class="p-4 font-medium w-12"></th>
-            <th class="p-4 font-medium">Name</th>
-            <th class="p-4 font-medium">Email</th>
-            <th class="p-4 font-medium">Phone</th>
-            <th class="p-4 font-medium">Status</th>
-            <th class="p-4 font-medium w-12"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @users.each do |user| %>
-            <tr class="border-b border-gray-200 hover:bg-gray-50">
-              <!-- User Icon -->
-              <td class="p-4">
-                <div class="h-8 w-8 bg-purple-600 rounded-md flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 12L7 2L12 12L17 2L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M2 12L7 22L12 12L17 22L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </div>
-              </td>
-              
-              <!-- User Info -->
-              <td class="p-4">
-                <div class="flex items-center gap-2">
-                  <div class="h-2 w-2 rounded-full <%= user.active? ? 'bg-green-500' : 'bg-red-500' %>"></div>
-                  <span><%= user.first_name %> <%= user.last_name %></span>
-                </div>
-              </td>
+<div class="overflow-x-auto mb-4 pb-40">
+  <!-- Table for larger screens -->
+  <table class="w-full min-w-[600px] border-collapse hidden md:table">
+    <thead>
+      <tr class="text-left text-gray-500 text-sm border-b border-gray-100">
+        <th class="p-4 font-medium w-12"></th>
+        <th class="p-4 font-medium">Name</th>
+        <th class="p-4 font-medium">Email</th>
+        <th class="p-4 font-medium">Phone</th>
+        <th class="p-4 font-medium">Status</th>
+        <th class="p-4 font-medium w-12"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="border-b border-gray-200 hover:bg-gray-50">
+          <td class="p-4">
+            <div class="h-8 w-8 bg-purple-600 rounded-md flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="h-5 w-5 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 12L7 2L12 12L17 2L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M2 12L7 22L12 12L17 22L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+          </td>
+          <td class="p-4">
+            <div class="flex items-center gap-2">
+              <div class="h-2 w-2 rounded-full <%= user.active? ? 'bg-green-500' : 'bg-red-500' %>"></div>
+              <span><%= user.first_name %> <%= user.last_name %></span>
+            </div>
+          </td>
+          <td class="p-4 text-gray-500"><%= user.email %></td>
+          <td class="p-4 text-gray-500"><%= user.phone_number %></td>
+          <td class="p-4">
+            <% if user.active? %>
+              <%= link_to "Deactivate", deactivate_admin_user_path(user), method: :patch, class: "bg-red-50 hover:bg-red-100 text-red-500 px-4 py-1 rounded-md", data: { turbo_method: :patch } %>
+            <% else %>
+              <%= link_to "Activate", activate_admin_user_path(user), method: :patch, class: "bg-green-50 hover:bg-green-100 text-green-500 px-4 py-1 rounded-md", data: { turbo_method: :patch } %>
+            <% end %>
+          </td>
+          <td class="p-4 relative">
+            <button onclick="toggleDropdown(event, '<%= user.id %>')" class="text-gray-400 hover:text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+              </svg>
+            </button>
+            <div id="dropdown-<%= user.id %>" class="hidden absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-md z-50">
+              <ul>
+                <li>
+                  <%= button_to "Delete", admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "block w-full text-left px-4 py-2 text-red-500 hover:bg-red-100" %>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-              <!-- Email -->
-              <td class="p-4 text-gray-500"><%= user.email %></td>
-
-              <!-- Phone Number -->
-              <td class="p-4 text-gray-500"><%= user.phone_number %></td>
-
-              <!-- Activate/Deactivate Button -->
-              <td class="p-4">
-                <% if user.active? %>
-                  <%= link_to "Deactivate", deactivate_admin_user_path(user), method: :patch, class: "bg-red-50 hover:bg-red-100 text-red-500 px-4 py-1 rounded-md", data: { turbo_method: :patch } %>
-                <% else %>
-                  <%= link_to "Activate", activate_admin_user_path(user), method: :patch, class: "bg-green-50 hover:bg-green-100 text-green-500 px-4 py-1 rounded-md", data: { turbo_method: :patch } %>
-                <% end %>
-              </td>
-
-              <!-- More Options -->
-              <td class="p-4 relative">
-                <button onclick="toggleDropdown(event, '<%= user.id %>')" class="text-gray-400 hover:text-gray-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-                  </svg>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div id="dropdown-<%= user.id %>" class="hidden absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-md z-50">
-                  <ul>
-                    <li>
-                      <%= button_to "Delete", admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "block w-full text-left px-4 py-2 text-red-500 hover:bg-red-100" %>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
+  <!-- Card layout for smaller screens -->
+  <div class="md:hidden">
+    <% @users.each do |user| %>
+      <div class="bg-white shadow-md rounded-lg mb-4 p-4">
+        <div class="flex items-center gap-4">
+          <div class="h-10 w-10 bg-purple-600 rounded-md flex items-center justify-center">
+            <svg viewBox="0 0 24 24" class="h-6 w-6 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 12L7 2L12 12L17 2L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M2 12L7 22L12 12L17 22L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-gray-800 font-medium"><%= user.first_name %> <%= user.last_name %></p>
+            <p class="text-gray-500 text-sm"><%= user.email %></p>
+            <p class="text-gray-500 text-sm"><%= user.phone_number %></p>
+          </div>
+        </div>
+        <div class="mt-4 flex justify-between items-center">
+          <% if user.active? %>
+            <%= link_to "Deactivate", deactivate_admin_user_path(user), method: :patch, class: "bg-red-50 hover:bg-red-100 text-red-500 px-4 py-1 rounded-md", data: { turbo_method: :patch } %>
+          <% else %>
+            <%= link_to "Activate", activate_admin_user_path(user), method: :patch, class: "bg-green-50 hover:bg-green-100 text-green-500 px-4 py-1 rounded-md", data: { turbo_method: :patch } %>
           <% end %>
-        </tbody>
-      </table>
-    </div>
+          <button onclick="toggleDropdown(event, '<%= user.id %>')" class="text-gray-400 hover:text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+            </svg>
+          </button>
+            <div id="dropdown-<%= user.id %>" class="hidden absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-md z-50">
+              <ul>
+                <li>
+                  <%= button_to "Delete", admin_user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "block w-full text-left px-4 py-2 text-red-500 hover:bg-red-100" %>
+                </li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
   </div>
 </div>
 
