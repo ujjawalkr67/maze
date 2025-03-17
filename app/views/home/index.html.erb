@@ -176,24 +176,17 @@
         <div class="flex flex-col gap-y-5 w-full">
           
           <div>
-            <label for="post_title" class="block text-base font-medium text-gray-900">Title</label>
+            <label for="post_description" class="block text-base font-medium text-gray-900">Mazee Post</label>
             <div class="mt-2">
-              <input type="text" name="post[title]" id="post_title" required class="w-full rounded-md bg-white py-2 px-3 text-gray-900 placeholder:text-gray-400 outline outline-1 outline-gray-300 focus:outline-indigo-600 focus:ring-2 sm:text-sm md:text-lg" placeholder="What's happening...?">
-            </div>
-          </div>
-
-          <div>
-            <label for="post_description" class="block text-base font-medium text-gray-900">Description</label>
-            <div class="mt-2">
-              <input type="text" name="post[description]" id="post_description" required class="w-full rounded-md bg-white px-3 py-2 text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 focus:ring-2 sm:text-sm md:text-lg" placeholder="Tell us more...">
+              <input type="text" name="post[description]" id="post_description" required class="w-full rounded-md bg-white px-3 py-2 text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 focus:ring-2 sm:text-sm md:text-lg" placeholder="What's happening...?">
             </div>
           </div>
 
           <!-- Public/Private Checkbox -->
           <div class="flex items-center gap-2">
-            <input type="hidden" name="post[public]" value="false"> 
-            <input type="checkbox" name="post[public]" id="post_public" value="true" class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-            <label for="post_public" class="text-base font-medium text-gray-900">Make Public</label>
+            <input type="hidden" name="post[public]" value="true"> 
+            <input type="checkbox" name="post[public]" id="post_public" value="false" class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+            <label for="post_public" class="text-base font-medium text-gray-900">Make Private</label>
           </div>
 
           <div class="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
@@ -225,7 +218,7 @@
             <div class="w-full flex justify-between items-center gap-4">
               <div class="flex items-center gap-3">
               <img src="<%= asset_path('icon.svg')%>" class="w-10 h-10 rounded-full" alt="profile">
-                <h1 class="w-full font-medium text-lg md:text-2xl"><%= post.title %></h1>
+                <h1 class="w-full font-medium text-lg md:text-2xl"><%= "#{post.user.first_name} #{post.user.last_name}" %></h1>
               </div>
               <div class="flex gap-3">
                 <div class="relative inline-block gap-1" x-data="{ open: false }">

@@ -4,6 +4,6 @@ class Post < ApplicationRecord
     has_many :likes, dependent: :destroy
 
     has_many :likes, as: :likeable, dependent: :destroy
-    validates :title, :description, presence: true
+    validates :description, presence: true
   end
   
