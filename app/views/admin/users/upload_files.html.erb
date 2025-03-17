@@ -119,10 +119,10 @@
 
  <!-- Main Content -->
  <div class="flex-1 flex flex-col ">
-   <!-- Top Header with Search -->
-<div class="bg-white p-4 flex flex-col md:flex-row items-center justify-between gap-y-4 md:gap-x-4 fixed top-0 left-0 md:left-64 right-0 h-auto md:h-16 z-10">
+<!-- Top Header with Search -->
+<div class="bg-white p-4 flex flex-col md:flex-row items-center  gap-y-4 md:gap-x-4 fixed top-0 left-0 md:left-64 right-0 h-auto md:h-16 z-10">
   <!-- Search Bar -->
-  <div class="w-full md:flex-1 max-w-3xl">
+  <div class="w-full md:flex-1 max-w-7xl">
     <div class="relative">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <img src="<%= asset_path('search.svg') %>" class="w-5 h-5 text-gray-400" alt="search">
@@ -136,14 +136,17 @@
   </div>
 
   <!-- User Profile -->
-  <div class="flex items-center gap-x-2">
+  <div class="hidden md:flex items-center gap-x-2 md:ml-10">
     <img 
       src="<%= current_user.avatar.attached? ? url_for(current_user.avatar) : asset_path('icon.svg') %>" 
-      class="w-8 h-4 md:h-10 rounded-full" 
+      class="md:w-8 md:h-10 rounded-full" 
       alt="profile"
     >
     <span class="ml-2 text-gray-700 font-medium hidden sm:block">
       <%= current_user.first_name %> <%= current_user.last_name %>
+      <% if current_user.has_role?(:admin) %>
+      <span class="block text-xs text-gray-500">Admin</span>
+    <% end %>
     </span>
   </div>
 </div>
